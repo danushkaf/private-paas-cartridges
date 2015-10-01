@@ -1,4 +1,4 @@
-WSO2-ESB 4.9.0 Template for the Configurator
+WSO2-ESB 4.8.1 Template for the Configurator
 -------------------------------------------------------------------------------------
 
 This template supports following configurations
