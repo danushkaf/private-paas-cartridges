@@ -23,7 +23,7 @@
 
 source /root/.bashrc
 
-export STRATOS_VERSION="4.1.0"
+export STRATOS_VERSION="4.1.1"
 export PCA_HOME="/opt/apache-stratos-python-cartridge-agent-${STRATOS_VERSION}"
 
 set -o posix ; set | sed -e ':a;N;$!ba;s/\n/,/g' > ${PCA_HOME}/payload/launch-params
@@ -173,6 +173,18 @@ if [ -z "${METADATA_SERVICE_URL}" ]; then
 	sed -i "s/METADATA-SERVICE-URL/ /g" ${PCA_HOME}/agent.conf
 else
 	sed -i "s#METADATA-SERVICE-URL#${METADATA_SERVICE_URL}#g" ${PCA_HOME}/agent.conf
+fi
+
+if [ -z "${ARTFCT_CLONE_RETRIES}" ]; then
+   sed -i "s/ARTFCT_CLONE_RETRIES/5/g" ${PCA_HOME}/agent.conf
+else
+   sed -i "s/ARTFCT_CLONE_RETRIES/${ARTFCT_CLONE_RETRIES}/g" ${PCA_HOME}/agent.conf
+fi
+
+if [ -z "${ARTFCT_CLONE_INT}" ]; then
+   sed -i "s/ARTFCT_CLONE_INT/10/g" ${PCA_HOME}/agent.conf
+else
+   sed -i "s/ARTFCT_CLONE_INT/${ARTFCT_CLONE_INT}/g" ${PCA_HOME}/agent.conf
 fi
 
 if [ -z "${LOG_LEVEL}" ]; then

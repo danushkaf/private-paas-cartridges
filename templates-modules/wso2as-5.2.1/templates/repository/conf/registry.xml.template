@@ -32,13 +32,13 @@
     </dbConfig>
 
     {% if CONFIG_PARAM_REGISTRY_DB_URL is defined -%}
-    <dbConfig name="sharedregistry">
+    <dbConfig name="governance">
         <dataSource>jdbc/WSO2RegistryDB</dataSource>
     </dbConfig>
 
     <remoteInstance url="https://localhost:9443/registry">
-        <id>instanceid</id>
-        <dbConfig>sharedregistry</dbConfig>
+        <id>governanceRegistryInstance</id>
+        <dbConfig>governance</dbConfig>
         {% if CONFIG_PARAM_SUB_DOMAIN == 'worker' -%}
             <readOnly>true</readOnly>
         {% else -%}
@@ -49,16 +49,56 @@
         <cacheId>{{CONFIG_PARAM_REGISTRY_DB_USER_NAME}}@{{CONFIG_PARAM_REGISTRY_DB_URL}}</cacheId>
     </remoteInstance>
 
-    <mount path="/_system/config" overwrite="true">
-        <instanceId>instanceid</instanceId>
-        <targetPath>/_system/asNodes</targetPath>
-    </mount>
-
     <mount path="/_system/governance" overwrite="true">
-        <instanceId>instanceid</instanceId>
+        <instanceId>governanceRegistryInstance</instanceId>
         <targetPath>/_system/governance</targetPath>
     </mount>
     {% endif -%}
+
+    {% if CONFIG_PARAM_CONFIG_DB_URL is defined -%}
+        <dbConfig name="config">
+            <dataSource>jdbc/WSO2ConfigDB</dataSource>
+        </dbConfig>
+
+        <remoteInstance url="https://localhost:9443/registry">
+            <id>configRegistryInstance</id>
+            <dbConfig>config</dbConfig>
+            {% if CONFIG_PARAM_SUB_DOMAIN == 'worker' -%}
+                <readOnly>true</readOnly>
+            {% else -%}
+                <readOnly>false</readOnly>
+            {%  endif -%}
+            <enableCache>true</enableCache>
+            <registryRoot>/</registryRoot>
+            <cacheId>{{CONFIG_PARAM_CONFIG_DB_USER_NAME}}@{{CONFIG_PARAM_CONFIG_DB_URL}}</cacheId>
+        </remoteInstance>
+
+        <mount path="/_system/config" overwrite="true">
+            <instanceId>configRegistryInstance</instanceId>
+            <targetPath>/_system/config</targetPath>
+        </mount>
+
+    {% endif -%}
+
+     <!--To isolate application resources in registry space -->
+    <handler class="org.wso2.carbon.appfactory.ext.authorization.ApplicationResourceAccessHandler">
+        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.URLMatcher">
+            <property name="pattern">/_system/governance/dependencies/.*</property>
+        </filter>
+    </handler>
+
+    <!--To secure system governance resources -->
+    <handler class="org.wso2.carbon.appfactory.ext.authorization.SystemResourceProtectionHandler">
+        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.URLMatcher">
+            <property name="pattern">/_system/governance/trunk/.*</property>
+        </filter>
+
+    </handler>
+        <handler class="org.wso2.carbon.appfactory.ext.authorization.SystemResourceProtectionHandler">
+        <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.URLMatcher">
+            <property name="pattern">/_system/governance/repository/.*</property>
+        </filter>
+    </handler>
 
     <!--<handler class="org.wso2.carbon.registry.extensions.handlers.SynapseRepositoryHandler">
          <filter class="org.wso2.carbon.registry.core.jdbc.handlers.filters.MediaTypeMatcher">

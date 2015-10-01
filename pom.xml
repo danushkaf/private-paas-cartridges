@@ -32,7 +32,7 @@
     <modules>
         <module>templates-modules</module>
     </modules>
-    
+
     <repositories>
         <repository>
             <id>apache.snapshots</id>

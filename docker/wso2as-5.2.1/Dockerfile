@@ -24,6 +24,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV WSO2_AS_VERSION 5.2.1
 ENV AS_TEMPLATE_MODULE_NAME wso2as-${WSO2_AS_VERSION}-template-module-${PPAAS_VERSION}
 ENV CARBON_HOME /opt/wso2as-${WSO2_AS_VERSION}
+ENV MYSQL_CONNECTOR_VERSION 5.1.27
 
 # --------------------------------
 # Copy scripts, packages & plugins
@@ -31,6 +32,11 @@ ENV CARBON_HOME /opt/wso2as-${WSO2_AS_VERSION}
 COPY scripts/init.sh /usr/local/bin/init.sh
 COPY packages/${AS_TEMPLATE_MODULE_NAME}.zip /opt/
 COPY packages/wso2as-${WSO2_AS_VERSION}.zip /opt/
+
+COPY scripts/export-envs.sh /tmp/export-envs.sh
+COPY packages/${AS_TEMPLATE_MODULE_NAME}.zip /opt/
+COPY packages/wso2as-${WSO2_AS_VERSION}.zip /opt/
+
 COPY plugins ${PCA_HOME}/plugins
 
 # -----------------------------
