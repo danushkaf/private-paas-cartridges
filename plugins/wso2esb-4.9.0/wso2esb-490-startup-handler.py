@@ -46,7 +46,7 @@ class WSO2ESBStartupHandler(ICartridgeAgentPlugin):
     CONST_PORT_MAPPING_PT_HTTPS_TRANSPORT = "pt-https"
     CONST_PROTOCOL_HTTP = "http"
     CONST_PROTOCOL_HTTPS = "https"
-    CONST_ESB = "wso2esb-481"
+    CONST_ESB = "wso2esb-490"
     CONST_ESB_WORKER = "%s-worker" % CONST_ESB
     CONST_PPAAS_MEMBERSHIP_SCHEME = "private-paas"
     SERVICES = ["%s-manager" % CONST_ESB, "%s-worker" % CONST_ESB]

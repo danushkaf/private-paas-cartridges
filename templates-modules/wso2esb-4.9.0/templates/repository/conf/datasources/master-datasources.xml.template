@@ -1,11 +1,8 @@
 <datasources-configuration xmlns:svns="http://org.wso2.securevault/configuration">
-  
     <providers>
         <provider>org.wso2.carbon.ndatasource.rdbms.RDBMSDataSourceReader</provider>
     </providers>
-  
     <datasources>
-
         {% if CONFIG_PARAM_LOCAL_REGISTRY_DB_URL is defined -%}
         <datasource>
             <name>REGISTRY_LOCAL1</name>
@@ -36,7 +33,7 @@
             </jndiConfig>
             <definition type="RDBMS">
                 <configuration>
-                    <url>jdbc:h2:{{CARBON_HOME}}/repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000</url>
+                    <url>jdbc:h2:repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE;LOCK_TIMEOUT=60000</url>
                     <username>wso2carbon</username>
                     <password>wso2carbon</password>
                     <driverClassName>org.h2.Driver</driverClassName>
@@ -45,6 +42,7 @@
                     <testOnBorrow>true</testOnBorrow>
                     <validationQuery>SELECT 1</validationQuery>
                     <validationInterval>30000</validationInterval>
+                    <defaultAutoCommit>false</defaultAutoCommit>
                 </configuration>
             </definition>
         </datasource>
